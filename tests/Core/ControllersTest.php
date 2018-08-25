@@ -106,6 +106,26 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedExceptionMessage Action 'execute' can not be executed
+     */
+    public function testInheritedAction()
+    {
+        $core = new SampleCore(new Container());
+        $core->callAction(DummyController::class, 'execute');
+    }
+
+    /**
+     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedExceptionMessage Action 'call' can not be executed
+     */
+    public function testInheritedActionCall()
+    {
+        $core = new SampleCore(new Container());
+        $core->callAction(DummyController::class, 'call');
+    }
+
+    /**
+     * @expectedException \Spiral\Core\Exceptions\ControllerException
      * @expectedExceptionMessage No such controller 'Spiral\Core\Tests\Fixtures\SampleCore' found
      */
     public function testCallNotController()

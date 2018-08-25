@@ -90,7 +90,7 @@ abstract class Controller implements ControllerInterface
      */
     protected function isExecutable(\ReflectionMethod $method)
     {
-        if ($method->isStatic() || !$method->isUserDefined()) {
+        if ($method->isStatic() || $method->getDeclaringClass()->getName() == self::class) {
             return false;
         }
 
