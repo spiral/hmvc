@@ -107,7 +107,7 @@ abstract class Controller implements ControllerInterface
      *
      * @return array
      */
-    private function resolveArguments(
+    protected function resolveArguments(
         ContainerInterface $container,
         \ReflectionMethod $method,
         array $parameters
