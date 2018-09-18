@@ -10,8 +10,8 @@ namespace Spiral\Core;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Spiral\Core\Exceptions\Container\ArgumentException;
-use Spiral\Core\Exceptions\ControllerException;
+use Spiral\Core\Exception\Container\ArgumentException;
+use Spiral\Core\Exception\ControllerException;
 
 /**
  * Basic application controller class. Implements method injections and simplified access to

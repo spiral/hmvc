@@ -8,7 +8,7 @@
 
 namespace Spiral\Core;
 
-use Spiral\Core\Exceptions\ControllerException;
+use Spiral\Core\Exception\ControllerException;
 
 /**
  * General application enterpoint class.

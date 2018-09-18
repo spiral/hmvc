@@ -9,7 +9,7 @@
 namespace Spiral\Core;
 
 use Psr\Container\ContainerInterface;
-use Spiral\Core\Exceptions\ControllerException;
+use Spiral\Core\Exception\ControllerException;
 
 /**
  * Provides ability to call controllers in IoC scope.

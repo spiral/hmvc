@@ -4,7 +4,8 @@
  *
  * @author    Wolfy-J
  */
-namespace Spiral\Core\Exceptions;
+
+namespace Spiral\Core\Exception;
 
 class CoreException extends RuntimeException
 {

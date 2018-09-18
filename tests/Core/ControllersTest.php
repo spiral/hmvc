@@ -53,7 +53,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Missing/invalid parameter 'id'
      */
     public function testCallActionMissingParameter()
@@ -63,7 +63,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Missing/invalid parameter 'id'
      */
     public function testCallActionInvalidParameter()
@@ -73,7 +73,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage No such controller 'Spiral\Core\Tests\BadController' found
      */
     public function testCallWrongController()
@@ -83,7 +83,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage No such action 'missing'
      */
     public function testCallBadAction()
@@ -95,7 +95,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Action 'inner' can not be executed
      */
     public function testStaticAction()
@@ -105,7 +105,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Action 'execute' can not be executed
      */
     public function testInheritedAction()
@@ -115,7 +115,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Action 'call' can not be executed
      */
     public function testInheritedActionCall()
@@ -125,7 +125,7 @@ class ControllersTest extends TestCase
     }
 
     /**
-     * @expectedException \Spiral\Core\Exceptions\ControllerException
+     * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage No such controller 'Spiral\Core\Tests\Fixtures\SampleCore' found
      */
     public function testCallNotController()
