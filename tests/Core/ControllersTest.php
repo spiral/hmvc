@@ -10,6 +10,7 @@ namespace Spiral\Core\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Spiral\Core\Container;
+use Spiral\Core\Tests\Fixtures\CleanController;
 use Spiral\Core\Tests\Fixtures\DummyController;
 use Spiral\Core\Tests\Fixtures\SampleCore;
 
@@ -126,7 +127,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage No such controller 'Spiral\Core\Tests\Fixtures\SampleCore' found
      */
     public function testCallNotController()
     {
@@ -157,6 +157,73 @@ class ControllersTest extends TestCase
             DummyController::class,
             'globalScope',
             ['id' => 900]
+        ));
+    }
+
+    public function testCleanController()
+    {
+        $core = new SampleCore(new Container());
+
+        $this->assertSame('900', $core->callAction(
+            CleanController::class,
+            'test',
+            ['id' => 900]
+        ));
+    }
+
+    /**
+     * @expectedException \Spiral\Core\Exception\ControllerException
+     */
+    public function testCleanControllerError()
+    {
+        $core = new SampleCore(new Container());
+
+        $this->assertSame('900', $core->callAction(
+            CleanController::class,
+            'test',
+            ['id' => null]
+        ));
+    }
+
+    /**
+     * @expectedException \Spiral\Core\Exception\ControllerException
+     */
+    public function testCleanControllerError2()
+    {
+        $core = new SampleCore(new Container());
+
+        $this->assertSame('900', $core->callAction(
+            CleanController::class,
+            'test',
+            []
+        ));
+    }
+
+    /**
+     * @expectedException \Spiral\Core\Exception\ControllerException
+     */
+    public function testCleanControllerError3()
+    {
+        $core = new SampleCore(new Container());
+
+        $this->assertSame('900', $core->callAction(
+            CleanController::class,
+            'invalid',
+            []
+        ));
+    }
+
+    /**
+     * @expectedException \Spiral\Core\Exception\ControllerException
+     */
+    public function testCleanControllerError4()
+    {
+        $core = new SampleCore(new Container());
+
+        $this->assertSame('900', $core->callAction(
+            CleanController::class,
+            'another',
+            []
         ));
     }
 }

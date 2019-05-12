@@ -8,7 +8,9 @@
 
 namespace Spiral\Core;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Spiral\Core\Exception\Container\ArgumentException;
 use Spiral\Core\Exception\ControllerException;
 
 /**
@@ -54,21 +56,64 @@ abstract class AbstractCore implements CoreInterface
             $parameters
         ) {
             $instance = $this->container->get($controller);
-            if (!$instance instanceof ControllerInterface) {
-                throw new ControllerException(
-                    "No such controller '{$controller}' found",
-                    ControllerException::NOT_FOUND
-                );
-            }
-
             return ContainerScope::runScope($this->container, function () use (
                 $instance,
                 $action,
                 $parameters
             ) {
-                // Lock Controller exception into global container scope
+                if (!$instance instanceof ControllerInterface) {
+                    return $this->callMethod($instance, $action, $parameters);
+                }
+
+                // delegate the resolution to the controller
                 return $instance->callAction($this->container, $action, $parameters);
             });
         });
+    }
+
+    /**
+     * @param object      $instance
+     * @param string|null $method
+     * @param array       $parameters
+     * @return mixed
+     *
+     * @throws ControllerException
+     */
+    protected function callMethod($instance, string $method = null, array $parameters = [])
+    {
+        if (is_null($method)) {
+            throw new ControllerException("No method to be called", ControllerException::BAD_ACTION);
+        }
+
+        if (is_null($method) || !method_exists($instance, $method)) {
+            throw new ControllerException("No such method '{$method}'", ControllerException::BAD_ACTION);
+        }
+
+        try {
+            $method = new \ReflectionMethod(get_class($instance), $method);
+        } catch (\ReflectionException $e) {
+            throw new ControllerException($e->getMessage(), ControllerException::BAD_ACTION, $e);
+        }
+
+        if ($method->isStatic() || !$method->isPublic()) {
+            throw new ControllerException("No such method '{$method}'", ControllerException::BAD_ACTION);
+        }
+
+        try {
+            //Getting set of arguments should be sent to requested method
+            $args = $this->container->get(ResolverInterface::class)->resolveArguments(
+                $method,
+                $parameters
+            );
+        } catch (ArgumentException $e) {
+            throw new ControllerException(
+                "Missing/invalid parameter '{$e->getParameter()->name}'",
+                ControllerException::BAD_ARGUMENT
+            );
+        } catch (ContainerExceptionInterface $e) {
+            throw new ControllerException($e->getMessage(), ControllerException::ERROR, $e);
+        }
+
+        return $method->invokeArgs($instance, $args);
     }
 }
