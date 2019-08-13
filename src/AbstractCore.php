@@ -21,10 +21,7 @@ use Spiral\Core\Exception\ControllerException;
  */
 abstract class AbstractCore implements CoreInterface
 {
-    /**
-     * @invisible
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface @internal */
     protected $container;
 
     /**
