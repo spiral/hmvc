@@ -148,18 +148,6 @@ class ControllersTest extends TestCase
         ));
     }
 
-    public function testGlobalScope()
-    {
-        $container = new Container();
-        $core = new SampleCore($container);
-
-        $this->assertSame($container, $core->callAction(
-            DummyController::class,
-            'globalScope',
-            ['id' => 900]
-        ));
-    }
-
     public function testCleanController()
     {
         $core = new SampleCore(new Container());

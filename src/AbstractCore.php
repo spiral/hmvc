@@ -35,12 +35,8 @@ abstract class AbstractCore implements CoreInterface
     /**
      * {@inheritdoc}
      */
-    public function callAction(
-        string $controller,
-        string $action = null,
-        array $parameters = [],
-        array $scope = []
-    ) {
+    public function callAction(string $controller, string $action = null, array $parameters = [], array $scope = [])
+    {
         if (!class_exists($controller)) {
             throw new ControllerException(
                 "No such controller '{$controller}' found",
@@ -54,18 +50,13 @@ abstract class AbstractCore implements CoreInterface
             $parameters
         ) {
             $instance = $this->container->get($controller);
-            return ContainerScope::runScope($this->container, function () use (
-                $instance,
-                $action,
-                $parameters
-            ) {
-                if (!$instance instanceof ControllerInterface) {
-                    return $this->callMethod($instance, $action, $parameters);
-                }
 
-                // delegate the resolution to the controller
-                return $instance->callAction($this->container, $action, $parameters);
-            });
+            if (!$instance instanceof ControllerInterface) {
+                return $this->callMethod($instance, $action, $parameters);
+            }
+
+            // delegate the resolution to the controller
+            return $instance->callAction($this->container, $action, $parameters);
         });
     }
 
