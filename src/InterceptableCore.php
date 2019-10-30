@@ -9,7 +9,10 @@ declare(strict_types=1);
 
 namespace Spiral\Core;
 
-class InterceptableCore implements CoreInterface
+/**
+ * The domain core with a set of domain action interceptors (business logic middleware).
+ */
+final class InterceptableCore implements CoreInterface
 {
     /** @var InterceptorPipeline */
     protected $pipeline;
