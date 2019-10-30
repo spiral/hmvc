@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Spiral\Core;
 
-class Core extends AbstractCore
+/**
+ * Simple domain core to invoke controller actions.
+ */
+final class Core extends AbstractCore
 {
 }

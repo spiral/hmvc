@@ -43,6 +43,11 @@ class InterceptableCore implements CoreInterface
      */
     public function callAction(string $controller, ?string $action, array $parameters = [], array $scope = [])
     {
-        return $this->pipeline->withCore($this->core)->callAction($controller, $action, $parameters, $scope);
+        return $this->pipeline->withCore($this->core)->callAction(
+            $controller,
+            $action,
+            $parameters,
+            $scope
+        );
     }
 }
