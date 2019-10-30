@@ -55,7 +55,7 @@ final class InterceptorPipeline implements CoreInterface
     public function callAction(string $controller, ?string $action, array $parameters = [], array $scope = [])
     {
         if ($this->core === null) {
-            throw new InterceptorException("Unable to invoke pipeline without assigned core");
+            throw new InterceptorException('Unable to invoke pipeline without assigned core');
         }
 
         $position = $this->position++;
