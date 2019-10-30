@@ -15,8 +15,8 @@ use Spiral\Core\Exception\Container\ArgumentException;
 use Spiral\Core\Exception\ControllerException;
 
 /**
- * Basic application controller class. Implements method injections and simplified access to
- * container bindings.
+ * Provides the ability to delegate part of invocation logic to the controller itself. Swaps contexts via provided
+ * container instance. Optional use.
  */
 abstract class Controller implements ControllerInterface
 {
@@ -36,11 +36,8 @@ abstract class Controller implements ControllerInterface
     /**
      * {@inheritdoc}
      */
-    public function callAction(
-        ContainerInterface $container,
-        string $action = null,
-        array $parameters = []
-    ) {
+    public function callAction(ContainerInterface $container, ?string $action, array $parameters = [])
+    {
         $method = static::ACTION_PREFIX . ($action ?? $this->defaultAction) . static::ACTION_POSTFIX;
 
         if (!method_exists($this, $method)) {
@@ -74,7 +71,6 @@ abstract class Controller implements ControllerInterface
      * @param \ReflectionMethod $method
      * @param array             $arguments
      * @param array             $parameters
-     *
      * @return mixed
      */
     protected function executeAction(\ReflectionMethod $method, array $arguments, array $parameters)
@@ -86,7 +82,6 @@ abstract class Controller implements ControllerInterface
      * Check if method is callable.
      *
      * @param \ReflectionMethod $method
-     *
      * @return bool
      */
     protected function isExecutable(\ReflectionMethod $method)
@@ -105,7 +100,6 @@ abstract class Controller implements ControllerInterface
      * @param ContainerInterface $container
      * @param \ReflectionMethod  $method
      * @param array              $parameters
-     *
      * @return array
      */
     protected function resolveArguments(

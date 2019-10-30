@@ -21,10 +21,7 @@ use Spiral\Core\Exception\ControllerException;
  */
 abstract class AbstractCore implements CoreInterface
 {
-    /**
-     * @invisible
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface @internal */
     protected $container;
 
     /**
@@ -38,12 +35,8 @@ abstract class AbstractCore implements CoreInterface
     /**
      * {@inheritdoc}
      */
-    public function callAction(
-        string $controller,
-        string $action = null,
-        array $parameters = [],
-        array $scope = []
-    ) {
+    public function callAction(string $controller, ?string $action, array $parameters = [], array $scope = [])
+    {
         if (!class_exists($controller)) {
             throw new ControllerException(
                 "No such controller '{$controller}' found",
@@ -51,25 +44,23 @@ abstract class AbstractCore implements CoreInterface
             );
         }
 
-        return $this->container->get(ScopeInterface::class)->runScope($scope, function () use (
-            $controller,
-            $action,
-            $parameters
-        ) {
-            $instance = $this->container->get($controller);
-            return ContainerScope::runScope($this->container, function () use (
-                $instance,
-                $action,
-                $parameters
-            ) {
-                if (!$instance instanceof ControllerInterface) {
-                    return $this->callMethod($instance, $action, $parameters);
-                }
+        return $this->container->get(ScopeInterface::class)->runScope(
+            $scope,
+            function () use ($controller, $action, $parameters) {
+                $instance = $this->container->get($controller);
+                return ContainerScope::runScope(
+                    $this->container,
+                    function () use ($instance, $action, $parameters) {
+                        if (!$instance instanceof ControllerInterface) {
+                            return $this->callMethod($instance, $action, $parameters);
+                        }
 
-                // delegate the resolution to the controller
-                return $instance->callAction($this->container, $action, $parameters);
-            });
-        });
+                        // delegate the resolution to the controller
+                        return $instance->callAction($this->container, $action, $parameters);
+                    }
+                );
+            }
+        );
     }
 
     /**
@@ -80,24 +71,37 @@ abstract class AbstractCore implements CoreInterface
      *
      * @throws ControllerException
      */
-    protected function callMethod($instance, string $method = null, array $parameters = [])
+    protected function callMethod(object $instance, string $method = null, array $parameters = [])
     {
         if (is_null($method)) {
-            throw new ControllerException("No method to be called", ControllerException::BAD_ACTION);
+            throw new ControllerException(
+                "No method to be called",
+                ControllerException::BAD_ACTION
+            );
         }
 
         if (is_null($method) || !method_exists($instance, $method)) {
-            throw new ControllerException("No such method '{$method}'", ControllerException::BAD_ACTION);
+            throw new ControllerException(
+                "No such method '{$method}'",
+                ControllerException::BAD_ACTION
+            );
         }
 
         try {
             $method = new \ReflectionMethod(get_class($instance), $method);
         } catch (\ReflectionException $e) {
-            throw new ControllerException($e->getMessage(), ControllerException::BAD_ACTION, $e);
+            throw new ControllerException(
+                $e->getMessage(),
+                ControllerException::BAD_ACTION,
+                $e
+            );
         }
 
         if ($method->isStatic() || !$method->isPublic()) {
-            throw new ControllerException("No such method '{$method}'", ControllerException::BAD_ACTION);
+            throw new ControllerException(
+                "No such method '{$method}'",
+                ControllerException::BAD_ACTION
+            );
         }
 
         try {
@@ -112,7 +116,11 @@ abstract class AbstractCore implements CoreInterface
                 ControllerException::BAD_ARGUMENT
             );
         } catch (ContainerExceptionInterface $e) {
-            throw new ControllerException($e->getMessage(), ControllerException::ERROR, $e);
+            throw new ControllerException(
+                $e->getMessage(),
+                ControllerException::ERROR,
+                $e
+            );
         }
 
         return $method->invokeArgs($instance, $args);

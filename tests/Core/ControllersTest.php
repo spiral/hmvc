@@ -39,7 +39,8 @@ class ControllersTest extends TestCase
     {
         $core = new SampleCore(new Container());
         $this->assertSame("Hello, Dave.", $core->callAction(
-            DummyController::class
+            DummyController::class,
+            null
         ));
     }
 
