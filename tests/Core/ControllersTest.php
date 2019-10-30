@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -16,38 +19,38 @@ use Spiral\Core\Tests\Fixtures\SampleCore;
 
 class ControllersTest extends TestCase
 {
-    public function testCallAction()
+    public function testCallAction(): void
     {
         $core = new SampleCore(new Container());
-        $this->assertSame("Hello, Antony.", $core->callAction(
+        $this->assertSame('Hello, Antony.', $core->callAction(
             DummyController::class,
             'index',
             ['name' => 'Antony']
         ));
     }
 
-    public function testCallActionDefaultParameter()
+    public function testCallActionDefaultParameter(): void
     {
         $core = new SampleCore(new Container());
-        $this->assertSame("Hello, Dave.", $core->callAction(
+        $this->assertSame('Hello, Dave.', $core->callAction(
             DummyController::class,
             'index'
         ));
     }
 
-    public function testCallActionDefaultAction()
+    public function testCallActionDefaultAction(): void
     {
         $core = new SampleCore(new Container());
-        $this->assertSame("Hello, Dave.", $core->callAction(
+        $this->assertSame('Hello, Dave.', $core->callAction(
             DummyController::class,
             null
         ));
     }
 
-    public function testCallActionDefaultActionWithParameter()
+    public function testCallActionDefaultActionWithParameter(): void
     {
         $core = new SampleCore(new Container());
-        $this->assertSame("Hello, Antony.", $core->callAction(
+        $this->assertSame('Hello, Antony.', $core->callAction(
             DummyController::class,
             null,
             ['name' => 'Antony']
@@ -58,7 +61,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Missing/invalid parameter 'id'
      */
-    public function testCallActionMissingParameter()
+    public function testCallActionMissingParameter(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(DummyController::class, 'required');
@@ -68,7 +71,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Missing/invalid parameter 'id'
      */
-    public function testCallActionInvalidParameter()
+    public function testCallActionInvalidParameter(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(DummyController::class, 'required', ['id' => null]);
@@ -78,7 +81,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage No such controller 'Spiral\Core\Tests\BadController' found
      */
-    public function testCallWrongController()
+    public function testCallWrongController(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(BadController::class, null, ['name' => 'Antony']);
@@ -88,7 +91,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage No such action 'missing'
      */
-    public function testCallBadAction()
+    public function testCallBadAction(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(DummyController::class, 'missing', [
@@ -100,7 +103,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Action 'inner' can not be executed
      */
-    public function testStaticAction()
+    public function testStaticAction(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(DummyController::class, 'inner');
@@ -110,7 +113,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Action 'execute' can not be executed
      */
-    public function testInheritedAction()
+    public function testInheritedAction(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(DummyController::class, 'execute');
@@ -120,7 +123,7 @@ class ControllersTest extends TestCase
      * @expectedException \Spiral\Core\Exception\ControllerException
      * @expectedExceptionMessage Action 'call' can not be executed
      */
-    public function testInheritedActionCall()
+    public function testInheritedActionCall(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(DummyController::class, 'call');
@@ -129,7 +132,7 @@ class ControllersTest extends TestCase
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
      */
-    public function testCallNotController()
+    public function testCallNotController(): void
     {
         $core = new SampleCore(new Container());
         $core->callAction(SampleCore::class, null, [
@@ -137,7 +140,7 @@ class ControllersTest extends TestCase
         ]);
     }
 
-    public function testScope()
+    public function testScope(): void
     {
         $container = new Container();
         $core = new SampleCore($container);
@@ -149,7 +152,7 @@ class ControllersTest extends TestCase
         ));
     }
 
-    public function testGlobalScope()
+    public function testGlobalScope(): void
     {
         $container = new Container();
         $core = new SampleCore($container);
@@ -161,7 +164,7 @@ class ControllersTest extends TestCase
         ));
     }
 
-    public function testCleanController()
+    public function testCleanController(): void
     {
         $core = new SampleCore(new Container());
 
@@ -175,7 +178,7 @@ class ControllersTest extends TestCase
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
      */
-    public function testCleanControllerError()
+    public function testCleanControllerError(): void
     {
         $core = new SampleCore(new Container());
 
@@ -189,7 +192,7 @@ class ControllersTest extends TestCase
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
      */
-    public function testCleanControllerError2()
+    public function testCleanControllerError2(): void
     {
         $core = new SampleCore(new Container());
 
@@ -203,7 +206,7 @@ class ControllersTest extends TestCase
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
      */
-    public function testCleanControllerError3()
+    public function testCleanControllerError3(): void
     {
         $core = new SampleCore(new Container());
 
@@ -217,7 +220,7 @@ class ControllersTest extends TestCase
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
      */
-    public function testCleanControllerError4()
+    public function testCleanControllerError4(): void
     {
         $core = new SampleCore(new Container());
 

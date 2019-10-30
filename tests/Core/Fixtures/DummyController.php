@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Spiral Framework.
  *
@@ -34,7 +37,7 @@ class DummyController extends Controller
         return ContainerScope::getContainer();
     }
 
-    static function innerAction()
+    public static function innerAction(): void
     {
     }
 }

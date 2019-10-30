@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Core;
@@ -23,8 +25,8 @@ abstract class Controller implements ControllerInterface
     /**
      * Controller action prefixes and postfixes.
      */
-    const ACTION_PREFIX  = '';
-    const ACTION_POSTFIX = 'Action';
+    public const ACTION_PREFIX  = '';
+    public const ACTION_POSTFIX = 'Action';
 
     /**
      * Default action to run.
@@ -42,7 +44,8 @@ abstract class Controller implements ControllerInterface
 
         if (!method_exists($this, $method)) {
             throw new ControllerException(
-                "No such action '{$action}'", ControllerException::BAD_ACTION
+                "No such action '{$action}'",
+                ControllerException::BAD_ACTION
             );
         }
 

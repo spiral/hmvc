@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Core;
@@ -26,7 +28,7 @@ final class InterceptorPipeline implements CoreInterface
     /**
      * @param CoreInterceptorInterface $interceptor
      */
-    public function addInterceptor(CoreInterceptorInterface $interceptor)
+    public function addInterceptor(CoreInterceptorInterface $interceptor): void
     {
         $this->interceptors[] = $interceptor;
     }

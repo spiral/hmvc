@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Core;
@@ -75,7 +77,7 @@ abstract class AbstractCore implements CoreInterface
     {
         if (is_null($method)) {
             throw new ControllerException(
-                "No method to be called",
+                'No method to be called',
                 ControllerException::BAD_ACTION
             );
         }
