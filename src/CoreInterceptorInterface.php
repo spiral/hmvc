@@ -33,7 +33,7 @@ interface CoreInterceptorInterface
      */
     public function callAction(
         string $controller,
-        ?string $action,
+        string $action,
         array $parameters,
         array $scope,
         CoreInterface $core

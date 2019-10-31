@@ -29,18 +29,11 @@ abstract class Controller implements ControllerInterface
     public const ACTION_POSTFIX = 'Action';
 
     /**
-     * Default action to run.
-     *
-     * @var string
-     */
-    protected $defaultAction = 'index';
-
-    /**
      * {@inheritdoc}
      */
-    public function callAction(ContainerInterface $container, ?string $action, array $parameters = [])
+    public function callAction(ContainerInterface $container, string $action, array $parameters = [])
     {
-        $method = static::ACTION_PREFIX . ($action ?? $this->defaultAction) . static::ACTION_POSTFIX;
+        $method = static::ACTION_PREFIX . $action . static::ACTION_POSTFIX;
 
         if (!method_exists($this, $method)) {
             throw new ControllerException(
@@ -105,11 +98,8 @@ abstract class Controller implements ControllerInterface
      * @param array              $parameters
      * @return array
      */
-    protected function resolveArguments(
-        ContainerInterface $container,
-        \ReflectionMethod $method,
-        array $parameters
-    ) {
+    protected function resolveArguments(ContainerInterface $container, \ReflectionMethod $method, array $parameters)
+    {
         try {
             //Getting set of arguments should be sent to requested method
             return $container->get(ResolverInterface::class)->resolveArguments(

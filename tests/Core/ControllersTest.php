@@ -43,7 +43,7 @@ class ControllersTest extends TestCase
         $core = new SampleCore(new Container());
         $this->assertSame('Hello, Dave.', $core->callAction(
             DummyController::class,
-            null
+            'index'
         ));
     }
 
@@ -52,7 +52,7 @@ class ControllersTest extends TestCase
         $core = new SampleCore(new Container());
         $this->assertSame('Hello, Antony.', $core->callAction(
             DummyController::class,
-            null,
+            'index',
             ['name' => 'Antony']
         ));
     }
@@ -84,7 +84,7 @@ class ControllersTest extends TestCase
     public function testCallWrongController(): void
     {
         $core = new SampleCore(new Container());
-        $core->callAction(BadController::class, null, ['name' => 'Antony']);
+        $core->callAction(BadController::class, 'index', ['name' => 'Antony']);
     }
 
     /**
@@ -135,7 +135,7 @@ class ControllersTest extends TestCase
     public function testCallNotController(): void
     {
         $core = new SampleCore(new Container());
-        $core->callAction(SampleCore::class, null, [
+        $core->callAction(SampleCore::class, 'index', [
             'name' => 'Antony'
         ]);
     }

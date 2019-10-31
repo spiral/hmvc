@@ -17,10 +17,10 @@ namespace Spiral\Core;
 final class InterceptableCore implements CoreInterface
 {
     /** @var InterceptorPipeline */
-    protected $pipeline;
+    private $pipeline;
 
     /** @var CoreInterface */
-    protected $core;
+    private $core;
 
     /**
      * @param CoreInterface $core
@@ -28,6 +28,7 @@ final class InterceptableCore implements CoreInterface
     public function __construct(CoreInterface $core)
     {
         $this->pipeline = new InterceptorPipeline();
+        $this->core = $core;
     }
 
     /**
@@ -46,7 +47,7 @@ final class InterceptableCore implements CoreInterface
      * @return mixed
      * @throws \Throwable
      */
-    public function callAction(string $controller, ?string $action, array $parameters = [], array $scope = [])
+    public function callAction(string $controller, string $action, array $parameters = [], array $scope = [])
     {
         return $this->pipeline->withCore($this->core)->callAction(
             $controller,

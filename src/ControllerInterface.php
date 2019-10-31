@@ -22,13 +22,13 @@ interface ControllerInterface
     /**
      * Execute specific controller action (method).
      *
-     * @param ContainerInterface $container Container scope.
-     * @param string             $action Action name, without postfixes and prefixes.
+     * @param ContainerInterface $container  Container scope.
+     * @param string             $action     Action name, without postfixes and prefixes.
      * @param array              $parameters Method parameters.
      * @return mixed
      *
      * @throws ControllerException
      * @throws \Throwable
      */
-    public function callAction(ContainerInterface $container, ?string $action, array $parameters = []);
+    public function callAction(ContainerInterface $container, string $action, array $parameters = []);
 }
