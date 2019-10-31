@@ -199,4 +199,18 @@ class CoreTest extends TestCase
             []
         ));
     }
+
+    /**
+     * @expectedException \Spiral\Core\Exception\ControllerException
+     */
+    public function testMissingDependency(): void
+    {
+        $core = new SampleCore(new Container());
+
+        $this->assertSame('900', $core->callAction(
+            CleanController::class,
+            'missing',
+            []
+        ));
+    }
 }
