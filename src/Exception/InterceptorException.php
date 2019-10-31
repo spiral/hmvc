@@ -9,11 +9,8 @@
 
 declare(strict_types=1);
 
-namespace Spiral\Core;
+namespace Spiral\Core\Exception;
 
-/**
- * Simple domain core to invoke controller actions.
- */
-final class Core extends AbstractCore
+class InterceptorException extends \RuntimeException
 {
 }

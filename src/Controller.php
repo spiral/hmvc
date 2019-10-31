@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Core;
@@ -15,37 +17,28 @@ use Spiral\Core\Exception\Container\ArgumentException;
 use Spiral\Core\Exception\ControllerException;
 
 /**
- * Basic application controller class. Implements method injections and simplified access to
- * container bindings.
+ * Provides the ability to delegate part of invocation logic to the controller itself. Swaps contexts via provided
+ * container instance. Optional use.
  */
 abstract class Controller implements ControllerInterface
 {
     /**
      * Controller action prefixes and postfixes.
      */
-    const ACTION_PREFIX  = '';
-    const ACTION_POSTFIX = 'Action';
-
-    /**
-     * Default action to run.
-     *
-     * @var string
-     */
-    protected $defaultAction = 'index';
+    public const ACTION_PREFIX  = '';
+    public const ACTION_POSTFIX = 'Action';
 
     /**
      * {@inheritdoc}
      */
-    public function callAction(
-        ContainerInterface $container,
-        string $action = null,
-        array $parameters = []
-    ) {
-        $method = static::ACTION_PREFIX . ($action ?? $this->defaultAction) . static::ACTION_POSTFIX;
+    public function callAction(ContainerInterface $container, string $action, array $parameters = [])
+    {
+        $method = static::ACTION_PREFIX . $action . static::ACTION_POSTFIX;
 
         if (!method_exists($this, $method)) {
             throw new ControllerException(
-                "No such action '{$action}'", ControllerException::BAD_ACTION
+                "No such action '{$action}'",
+                ControllerException::BAD_ACTION
             );
         }
 
@@ -74,7 +67,6 @@ abstract class Controller implements ControllerInterface
      * @param \ReflectionMethod $method
      * @param array             $arguments
      * @param array             $parameters
-     *
      * @return mixed
      */
     protected function executeAction(\ReflectionMethod $method, array $arguments, array $parameters)
@@ -86,7 +78,6 @@ abstract class Controller implements ControllerInterface
      * Check if method is callable.
      *
      * @param \ReflectionMethod $method
-     *
      * @return bool
      */
     protected function isExecutable(\ReflectionMethod $method)
@@ -105,14 +96,10 @@ abstract class Controller implements ControllerInterface
      * @param ContainerInterface $container
      * @param \ReflectionMethod  $method
      * @param array              $parameters
-     *
      * @return array
      */
-    protected function resolveArguments(
-        ContainerInterface $container,
-        \ReflectionMethod $method,
-        array $parameters
-    ) {
+    protected function resolveArguments(ContainerInterface $container, \ReflectionMethod $method, array $parameters)
+    {
         try {
             //Getting set of arguments should be sent to requested method
             return $container->get(ResolverInterface::class)->resolveArguments(
