@@ -75,18 +75,11 @@ abstract class AbstractCore implements CoreInterface
      */
     protected function callMethod(object $instance, string $method, array $parameters)
     {
-        if (!method_exists($instance, $method)) {
-            throw new ControllerException(
-                "No such method '{$method}'",
-                ControllerException::BAD_ACTION
-            );
-        }
-
         try {
-            $method = new \ReflectionMethod(get_class($instance), $method);
+            $method = new \ReflectionMethod($instance, $method);
         } catch (\ReflectionException $e) {
             throw new ControllerException(
-                $e->getMessage(),
+                "Invalid action '{$method}'",
                 ControllerException::BAD_ACTION,
                 $e
             );
