@@ -60,7 +60,6 @@ final class InterceptorPipeline implements CoreInterface
             throw new InterceptorException('Unable to invoke pipeline without assigned core');
         }
 
-
         $position = $this->position++;
         if (isset($this->interceptors[$position])) {
             return $this->interceptors[$position]->process($controller, $action, $parameters, $this);
