@@ -66,23 +66,16 @@ abstract class AbstractCore implements CoreInterface
     }
 
     /**
-     * @param object      $instance
-     * @param string|null $method
-     * @param array       $parameters
+     * @param object $instance
+     * @param string $method
+     * @param array  $parameters
      * @return mixed
      *
      * @throws ControllerException
      */
-    protected function callMethod(object $instance, string $method = null, array $parameters = [])
+    protected function callMethod(object $instance, string $method, array $parameters)
     {
-        if (is_null($method)) {
-            throw new ControllerException(
-                'No method to be called',
-                ControllerException::BAD_ACTION
-            );
-        }
-
-        if (is_null($method) || !method_exists($instance, $method)) {
+        if (!method_exists($instance, $method)) {
             throw new ControllerException(
                 "No such method '{$method}'",
                 ControllerException::BAD_ACTION
