@@ -17,7 +17,7 @@ use Spiral\Core\Tests\Fixtures\CleanController;
 use Spiral\Core\Tests\Fixtures\DummyController;
 use Spiral\Core\Tests\Fixtures\SampleCore;
 
-class ControllersTest extends TestCase
+class CoreTest extends TestCase
 {
     public function testCallAction(): void
     {
@@ -59,7 +59,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage Missing/invalid parameter 'id'
      */
     public function testCallActionMissingParameter(): void
     {
@@ -69,7 +68,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage Missing/invalid parameter 'id'
      */
     public function testCallActionInvalidParameter(): void
     {
@@ -79,7 +77,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage No such controller 'Spiral\Core\Tests\BadController' found
      */
     public function testCallWrongController(): void
     {
@@ -89,7 +86,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage No such action 'missing'
      */
     public function testCallBadAction(): void
     {
@@ -101,7 +97,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage Action 'inner' can not be executed
      */
     public function testStaticAction(): void
     {
@@ -111,7 +106,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage Action 'execute' can not be executed
      */
     public function testInheritedAction(): void
     {
@@ -121,7 +115,6 @@ class ControllersTest extends TestCase
 
     /**
      * @expectedException \Spiral\Core\Exception\ControllerException
-     * @expectedExceptionMessage Action 'call' can not be executed
      */
     public function testInheritedActionCall(): void
     {
@@ -138,30 +131,6 @@ class ControllersTest extends TestCase
         $core->callAction(SampleCore::class, 'index', [
             'name' => 'Antony'
         ]);
-    }
-
-    public function testScope(): void
-    {
-        $container = new Container();
-        $core = new SampleCore($container);
-
-        $this->assertSame($container, $core->callAction(
-            DummyController::class,
-            'scope',
-            ['id' => 900]
-        ));
-    }
-
-    public function testGlobalScope(): void
-    {
-        $container = new Container();
-        $core = new SampleCore($container);
-
-        $this->assertSame($container, $core->callAction(
-            DummyController::class,
-            'globalScope',
-            ['id' => 900]
-        ));
     }
 
     public function testCleanController(): void

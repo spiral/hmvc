@@ -23,14 +23,12 @@ interface CoreInterface
      * controller, we can request it too.
      *
      * @param string $controller Controller class.
-     * @param string $action     Controller action, empty by default (controller will use default action).
+     * @param string $action     Controller method name.
      * @param array  $parameters Action parameters (if any).
-     * @param array  $scope      Scope in a form if [alias=>binding] to be set by container before executing
-     *                           given action.
      * @return mixed
      *
      * @throws ControllerException
      * @throws \Throwable
      */
-    public function callAction(string $controller, string $action, array $parameters = [], array $scope = []);
+    public function callAction(string $controller, string $action, array $parameters = []);
 }

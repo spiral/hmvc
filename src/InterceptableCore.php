@@ -40,20 +40,10 @@ final class InterceptableCore implements CoreInterface
     }
 
     /**
-     * @param string      $controller
-     * @param string|null $action
-     * @param array       $parameters
-     * @param array       $scope
-     * @return mixed
-     * @throws \Throwable
+     * @inheritDoc
      */
-    public function callAction(string $controller, string $action, array $parameters = [], array $scope = [])
+    public function callAction(string $controller, string $action, array $parameters = [])
     {
-        return $this->pipeline->withCore($this->core)->callAction(
-            $controller,
-            $action,
-            $parameters,
-            $scope
-        );
+        return $this->pipeline->withCore($this->core)->callAction($controller, $action, $parameters);
     }
 }

@@ -16,15 +16,8 @@ use Spiral\Core\CoreInterface;
 
 class DemoInterceptor implements CoreInterceptorInterface
 {
-    public function callAction(
-        string $controller,
-        string $action,
-        array $parameters,
-        array $scope,
-        CoreInterface $core
-    ) {
-        $result = $core->callAction($controller, $action, $parameters, $scope);
-
-        return '?' . $result . '!';
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core)
+    {
+        return '?' . $core->callAction($controller, $action, $parameters) . '!';
     }
 }

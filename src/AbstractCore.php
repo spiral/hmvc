@@ -26,60 +26,30 @@ abstract class AbstractCore implements CoreInterface
     /** @var ContainerInterface @internal */
     protected $container;
 
+    /** @var ResolverInterface @internal */
+    protected $resolver;
+
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+
+        // resolver is usually the container itself
+        $this->resolver = $container->get(ResolverInterface::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function callAction(string $controller, ?string $action, array $parameters = [], array $scope = [])
-    {
-        if (!class_exists($controller)) {
-            throw new ControllerException(
-                "No such controller '{$controller}' found",
-                ControllerException::NOT_FOUND
-            );
-        }
-
-        return $this->container->get(ScopeInterface::class)->runScope(
-            $scope,
-            function () use ($controller, $action, $parameters) {
-                $instance = $this->container->get($controller);
-                return ContainerScope::runScope(
-                    $this->container,
-                    function () use ($instance, $action, $parameters) {
-                        if (!$instance instanceof ControllerInterface) {
-                            return $this->callMethod($instance, $action, $parameters);
-                        }
-
-                        // delegate the resolution to the controller
-                        return $instance->callAction($this->container, $action, $parameters);
-                    }
-                );
-            }
-        );
-    }
-
-    /**
-     * @param object $instance
-     * @param string $method
-     * @param array  $parameters
-     * @return mixed
-     *
-     * @throws ControllerException
-     */
-    protected function callMethod(object $instance, string $method, array $parameters)
+    public function callAction(string $controller, string $action, array $parameters = [])
     {
         try {
-            $method = new \ReflectionMethod($instance, $method);
+            $method = new \ReflectionMethod($controller, $action);
         } catch (\ReflectionException $e) {
             throw new ControllerException(
-                "Invalid action '{$method}'",
+                "Invalid action `{$controller}`->`{$action}`",
                 ControllerException::BAD_ACTION,
                 $e
             );
@@ -87,20 +57,17 @@ abstract class AbstractCore implements CoreInterface
 
         if ($method->isStatic() || !$method->isPublic()) {
             throw new ControllerException(
-                "No such method '{$method}'",
+                "Invalid action `{$controller}`->`{$action}`",
                 ControllerException::BAD_ACTION
             );
         }
 
         try {
-            //Getting set of arguments should be sent to requested method
-            $args = $this->container->get(ResolverInterface::class)->resolveArguments(
-                $method,
-                $parameters
-            );
+            // getting the set of arguments should be sent to requested method
+            $args = $this->resolver->resolveArguments($method, $parameters);
         } catch (ArgumentException $e) {
             throw new ControllerException(
-                "Missing/invalid parameter '{$e->getParameter()->name}'",
+                "Missing/invalid parameter '{$e->getParameter()->name}' of  `{$controller}`->`{$action}`",
                 ControllerException::BAD_ARGUMENT
             );
         } catch (ContainerExceptionInterface $e) {
@@ -111,6 +78,6 @@ abstract class AbstractCore implements CoreInterface
             );
         }
 
-        return $method->invokeArgs($instance, $args);
+        return $method->invokeArgs($this->container->get($controller), $args);
     }
 }

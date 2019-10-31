@@ -48,21 +48,24 @@ final class InterceptorPipeline implements CoreInterface
     }
 
     /**
-     * @inheritDoc
-     *
-     * @throws InterceptorException
+     * @param string      $controller
+     * @param string|null $action
+     * @param array       $parameters
+     * @return mixed
+     * @throws \Throwable
      */
-    public function callAction(string $controller, ?string $action, array $parameters = [], array $scope = [])
+    public function callAction(string $controller, string $action, array $parameters = [])
     {
         if ($this->core === null) {
             throw new InterceptorException('Unable to invoke pipeline without assigned core');
         }
 
+
         $position = $this->position++;
         if (isset($this->interceptors[$position])) {
-            return $this->interceptors[$position]->callAction($controller, $action, $parameters, $scope, $this);
+            return $this->interceptors[$position]->process($controller, $action, $parameters, $this);
         }
 
-        return $this->core->callAction($controller, $action, $parameters, $scope);
+        return $this->core->callAction($controller, $action, $parameters);
     }
 }

@@ -22,20 +22,13 @@ interface CoreInterceptorInterface
      * Process action request to underlying domain core action.
      *
      * @param string        $controller
-     * @param string|null   $action
+     * @param string        $action
      * @param array         $parameters
-     * @param array         $scope
      * @param CoreInterface $core
      * @return mixed
      *
      * @throws ControllerException
      * @throws \Throwable
      */
-    public function callAction(
-        string $controller,
-        string $action,
-        array $parameters,
-        array $scope,
-        CoreInterface $core
-    );
+    public function process(string $controller, string $action, array $parameters, CoreInterface $core);
 }
