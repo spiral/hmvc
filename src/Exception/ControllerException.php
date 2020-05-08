@@ -24,4 +24,5 @@ class ControllerException extends RuntimeException
     public const BAD_ARGUMENT = 2;
     public const FORBIDDEN    = 3;
     public const ERROR        = 4;
+    public const UNAUTHORIZED = 8;
 }
