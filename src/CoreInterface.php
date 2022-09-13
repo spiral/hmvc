@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
-
 declare(strict_types=1);
 
 namespace Spiral\Core;
@@ -23,12 +16,11 @@ interface CoreInterface
      * controller, we can request it too.
      *
      * @param string $controller Controller class.
-     * @param string $action     Controller method name.
-     * @param array  $parameters Action parameters (if any).
-     * @return mixed
+     * @param string $action Controller method name.
+     * @param array $parameters Action parameters (if any).
      *
      * @throws ControllerException
      * @throws \Throwable
      */
-    public function callAction(string $controller, string $action, array $parameters = []);
+    public function callAction(string $controller, string $action, array $parameters = []): mixed;
 }

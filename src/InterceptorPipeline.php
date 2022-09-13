@@ -1,16 +1,11 @@
 <?php
 
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
-
 declare(strict_types=1);
 
 namespace Spiral\Core;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Spiral\Core\Event\InterceptorCalling;
 use Spiral\Core\Exception\InterceptorException;
 
 /**
@@ -18,14 +13,17 @@ use Spiral\Core\Exception\InterceptorException;
  */
 final class InterceptorPipeline implements CoreInterface
 {
-    /** @var CoreInterface */
-    private $core;
+    private ?CoreInterface $core = null;
 
     /** @var CoreInterceptorInterface[] */
-    private $interceptors = [];
+    private array $interceptors = [];
 
-    /** @var int */
-    private $position = 0;
+    private int $position = 0;
+
+    public function __construct(
+        private readonly ?EventDispatcherInterface $dispatcher = null
+    ) {
+    }
 
     public function addInterceptor(CoreInterceptorInterface $interceptor): void
     {
@@ -41,11 +39,9 @@ final class InterceptorPipeline implements CoreInterface
     }
 
     /**
-     * @param string|null $action
-     * @return mixed
      * @throws \Throwable
      */
-    public function callAction(string $controller, string $action, array $parameters = [])
+    public function callAction(string $controller, string $action, array $parameters = []): mixed
     {
         if ($this->core === null) {
             throw new InterceptorException('Unable to invoke pipeline without assigned core');
@@ -53,7 +49,15 @@ final class InterceptorPipeline implements CoreInterface
 
         $position = $this->position++;
         if (isset($this->interceptors[$position])) {
-            return $this->interceptors[$position]->process($controller, $action, $parameters, $this);
+            $interceptor = $this->interceptors[$position];
+            $this->dispatcher?->dispatch(new InterceptorCalling(
+                controller: $controller,
+                action: $action,
+                parameters: $parameters,
+                interceptor: $interceptor
+            ));
+
+            return $interceptor->process($controller, $action, $parameters, $this);
         }
 
         return $this->core->callAction($controller, $action, $parameters);
