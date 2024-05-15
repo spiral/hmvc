@@ -37,14 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Spiral\\Core\\": "src/Core",
-            "Spiral\\Interceptors\\": "src/Interceptors"
+            "Spiral\\Core\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spiral\\Tests\\Core\\": "tests/Core",
-            "Spiral\\Tests\\Interceptors\\": "tests/Interceptors"
+            "Spiral\\Tests\\Core\\": "tests"
         }
     },
     "extra": {
