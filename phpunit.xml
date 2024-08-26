@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         backupGlobals="false"
          colors="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         stopOnError="false"
+         cacheResultFile="runtime/phpunit/result.cache"
+         failOnWarning="true"
+         failOnRisky="true"
+         executionOrder="random"
          stderr="true"
-         cacheDirectory=".phpunit.cache"
-         backupStaticProperties="false"
+         beStrictAboutOutputDuringTests="true"
 >
 <testsuites>
     <testsuite name="Test Suite">
