@@ -19,10 +19,10 @@ final class InterceptableCoreTest extends TestCase
     {
         $int = new InterceptableCore(new SampleCore($this->getContainer()));
 
-        $this->assertSame('Hello, Antony.', $int->callAction(
+        self::assertSame('Hello, Antony.', $int->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony']
+            ['name' => 'Antony'],
         ));
     }
 
@@ -31,10 +31,10 @@ final class InterceptableCoreTest extends TestCase
         $int = new InterceptableCore(new SampleCore($this->getContainer()));
         $int->addInterceptor(new DemoInterceptor());
 
-        $this->assertSame('?Hello, Antony.!', $int->callAction(
+        self::assertSame('?Hello, Antony.!', $int->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony']
+            ['name' => 'Antony'],
         ));
     }
 
@@ -44,10 +44,10 @@ final class InterceptableCoreTest extends TestCase
         $int->addInterceptor(new DemoInterceptor());
         $int->addInterceptor(new DemoInterceptor());
 
-        $this->assertSame('??Hello, Antony.!!', $int->callAction(
+        self::assertSame('??Hello, Antony.!!', $int->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony']
+            ['name' => 'Antony'],
         ));
     }
 
@@ -59,7 +59,7 @@ final class InterceptableCoreTest extends TestCase
         $pipeline->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony']
+            ['name' => 'Antony'],
         );
     }
 }
