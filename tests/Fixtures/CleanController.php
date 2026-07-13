@@ -11,7 +11,11 @@ class CleanController
         return $id;
     }
 
-    public function missing(\SomeClass $arg): void {}
+    public function missing(\SomeClass $arg): void
+    {
+    }
 
-    protected function another(): void {}
+    protected function another(): void
+    {
+    }
 }

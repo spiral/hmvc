@@ -4,50 +4,52 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\Core;
 
+use PHPUnit\Framework\TestCase;
+use Spiral\Core\Container;
 use Spiral\Core\Exception\InterceptorException;
 use Spiral\Core\InterceptableCore;
 use Spiral\Core\InterceptorPipeline;
-use Spiral\Testing\Attribute\TestScope;
-use Spiral\Testing\TestCase;
 use Spiral\Tests\Core\Fixtures\DummyController;
 use Spiral\Tests\Core\Fixtures\SampleCore;
 
-#[TestScope('http')]
-final class InterceptableCoreTest extends TestCase
+class InterceptableCoreTest extends TestCase
 {
     public function testNoInterceptors(): void
     {
-        $int = new InterceptableCore(new SampleCore($this->getContainer()));
+        $core = new SampleCore(new Container());
+        $int = new InterceptableCore($core);
 
-        self::assertSame('Hello, Antony.', $int->callAction(
+        $this->assertSame('Hello, Antony.', $int->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony'],
+            ['name' => 'Antony']
         ));
     }
 
     public function testNoInterceptors2(): void
     {
-        $int = new InterceptableCore(new SampleCore($this->getContainer()));
+        $core = new SampleCore(new Container());
+        $int = new InterceptableCore($core);
         $int->addInterceptor(new DemoInterceptor());
 
-        self::assertSame('?Hello, Antony.!', $int->callAction(
+        $this->assertSame('?Hello, Antony.!', $int->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony'],
+            ['name' => 'Antony']
         ));
     }
 
     public function testNoInterceptors22(): void
     {
-        $int = new InterceptableCore(new SampleCore($this->getContainer()));
+        $core = new SampleCore(new Container());
+        $int = new InterceptableCore($core);
         $int->addInterceptor(new DemoInterceptor());
         $int->addInterceptor(new DemoInterceptor());
 
-        self::assertSame('??Hello, Antony.!!', $int->callAction(
+        $this->assertSame('??Hello, Antony.!!', $int->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony'],
+            ['name' => 'Antony']
         ));
     }
 
@@ -59,7 +61,7 @@ final class InterceptableCoreTest extends TestCase
         $pipeline->callAction(
             DummyController::class,
             'index',
-            ['name' => 'Antony'],
+            ['name' => 'Antony']
         );
     }
 }
