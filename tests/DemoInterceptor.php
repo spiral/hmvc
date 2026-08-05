@@ -7,7 +7,7 @@ namespace Spiral\Tests\Core;
 use Spiral\Core\CoreInterceptorInterface;
 use Spiral\Core\CoreInterface;
 
-final class DemoInterceptor implements CoreInterceptorInterface
+class DemoInterceptor implements CoreInterceptorInterface
 {
     public function process(string $controller, string $action, array $parameters, CoreInterface $core): string
     {
