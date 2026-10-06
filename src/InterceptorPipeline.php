@@ -6,10 +6,10 @@ namespace Spiral\Core;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Spiral\Core\Event\InterceptorCalling;
-use Spiral\Core\Exception\InterceptorException;
 use Spiral\Interceptors\Context\CallContext;
 use Spiral\Interceptors\Context\CallContextInterface;
 use Spiral\Interceptors\Context\Target;
+use Spiral\Interceptors\Exception\InterceptorException;
 use Spiral\Interceptors\HandlerInterface;
 use Spiral\Interceptors\InterceptorInterface;
 
@@ -111,9 +111,10 @@ final class InterceptorPipeline implements CoreInterface, HandlerInterface
                 : $interceptor->intercept($context, $handler);
         }
 
-        return $this->core === null
+        $core = $this->core;
+        return $core === null
             ? $this->handler->handle($context)
-            : $this->core->callAction($path[0] ?? '', $path[1] ?? '', $context->getArguments());
+            : $core->callAction($path[0] ?? '', $path[1] ?? '', $context->getArguments());
     }
 
     private function nextWithContext(CallContextInterface $context): self
